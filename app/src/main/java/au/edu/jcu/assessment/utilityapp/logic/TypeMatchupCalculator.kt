@@ -3,7 +3,7 @@ package au.edu.jcu.assessment.utilityapp.logic
 import au.edu.jcu.assessment.utilityapp.data.TypeDto
 
 /**
- * Represents a Pokemon's defensive type matchups.
+ * Represents defensive type matchups.
  */
 data class TypeMatchup(
     val weaknesses: List<String>,
@@ -12,10 +12,10 @@ data class TypeMatchup(
 )
 
 /**
- * Calculates defensive type effectiveness.
+ * Calculates defensive effectiveness for single-type
+ * and dual-type Pokemon.
  *
- * Supports both single-type and dual-type Pokemon.
- * For dual types, damage multipliers are multiplied.
+ * Type multipliers are combined multiplicatively.
  */
 object TypeMatchupCalculator {
 
@@ -35,21 +35,21 @@ object TypeMatchupCalculator {
 
         typeData.forEach { type ->
 
-            val relations = type.damage_relations
+            val relations = type.damageRelations
 
-            relations.double_damage_from.forEach {
+            relations.doubleDamageFrom.forEach {
                 val name = it.name
                 multipliers[name] =
                     (multipliers[name] ?: 1.0) * 2.0
             }
 
-            relations.half_damage_from.forEach {
+            relations.halfDamageFrom.forEach {
                 val name = it.name
                 multipliers[name] =
                     (multipliers[name] ?: 1.0) * 0.5
             }
 
-            relations.no_damage_from.forEach {
+            relations.noDamageFrom.forEach {
                 multipliers[it.name] = 0.0
             }
         }
