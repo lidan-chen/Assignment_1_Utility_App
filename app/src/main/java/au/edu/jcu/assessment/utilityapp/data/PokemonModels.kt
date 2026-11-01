@@ -2,21 +2,37 @@ package au.edu.jcu.assessment.utilityapp.data
 
 import com.google.gson.annotations.SerializedName
 
+/**
+ * Represents a named resource returned by PokeAPI.
+ */
 data class NamedResource(
     val name: String
 )
 
+/**
+ * Represents one of a Pokemon's types.
+ */
 data class PokemonTypeSlot(
     val type: NamedResource
 )
 
+/**
+ * Represents a Pokemon's base stat.
+ */
 data class PokemonStatSlot(
-    val base_stat: Int,
+    @SerializedName("base_stat")
+    val baseStat: Int,
+
     val stat: NamedResource
 )
 
+/**
+ * Contains the Pokemon's image URLs.
+ */
 data class PokemonSprites(
-    val front_default: String?,
+    @SerializedName("front_default")
+    val frontDefault: String?,
+
     val other: PokemonOtherSprites?
 )
 
@@ -26,9 +42,13 @@ data class PokemonOtherSprites(
 )
 
 data class Artwork(
-    val front_default: String?
+    @SerializedName("front_default")
+    val frontDefault: String?
 )
 
+/**
+ * Main Pokemon data model.
+ */
 data class PokemonDto(
     val id: Int,
     val name: String,
@@ -39,24 +59,37 @@ data class PokemonDto(
     val sprites: PokemonSprites
 ) {
     val imageUrl: String?
-        get() = sprites.other?.officialArtwork?.front_default
-            ?: sprites.front_default
+        get() = sprites.other?.officialArtwork?.frontDefault
+            ?: sprites.frontDefault
 
+    /**
+     * Returns a base stat by its API name.
+     */
     fun stat(label: String): Int {
         return stats.firstOrNull {
             it.stat.name == label
-        }?.base_stat ?: 0
+        }?.baseStat ?: 0
     }
 }
 
+/**
+ * Describes how attacking types affect a defending type.
+ */
 data class DamageRelations(
-    val double_damage_from: List<NamedResource>,
-    val half_damage_from: List<NamedResource>,
-    val no_damage_from: List<NamedResource>
+    @SerializedName("double_damage_from")
+    val doubleDamageFrom: List<NamedResource>,
+
+    @SerializedName("half_damage_from")
+    val halfDamageFrom: List<NamedResource>,
+
+    @SerializedName("no_damage_from")
+    val noDamageFrom: List<NamedResource>
 )
 
 data class TypeDto(
-    val damage_relations: DamageRelations
+    @SerializedName("damage_relations")
+    val damageRelations: DamageRelations
 )
+
 
 
