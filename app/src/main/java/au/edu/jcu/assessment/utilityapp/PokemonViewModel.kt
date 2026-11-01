@@ -109,11 +109,11 @@ class PokemonViewModel(
                 }
 
                 showError(message)
-            } catch (exception: IOException) {
+            } catch (_: IOException) {
                 showError(
                     "Network unavailable. Check your connection."
                 )
-            } catch (exception: Exception) {
+            } catch (_: Exception) {
                 showError(
                     "Unable to load Pokemon. Please try again."
                 )
@@ -129,14 +129,6 @@ class PokemonViewModel(
         searchPokemon(randomId.toString())
     }
 
-    /**
-     * Clears the displayed error message.
-     */
-    fun clearError() {
-        _uiState.update {
-            it.copy(errorMessage = null)
-        }
-    }
 
     private fun showError(message: String) {
         _uiState.update {
